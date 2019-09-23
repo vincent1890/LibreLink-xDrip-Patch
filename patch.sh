@@ -139,7 +139,7 @@ done
 
 cd /tmp/librelink/
 for patch in ${patches} ; do
-    "echo${WHITE}Patch : ${patch}${NORMAL}"
+    echo -e "${WHITE}Patch : ${patch}${NORMAL}"
     git apply --whitespace=nowarn --verbose "${WORKDIR}/${patch}"
     if [ $? = 0 ]; then
         echo -e "${GREEN}  okay.${NORMAL}"
