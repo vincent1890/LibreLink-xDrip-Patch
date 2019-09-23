@@ -100,17 +100,51 @@ else
 fi
 
 echo -e "${WHITE}Patche original App ...${NORMAL}"
+
+echo -e <<EOF
+Sollen die Online-Funktionen der Librelink-App deaktiviert werden?
+
+Mit deaktivierter Online-Funktionalität werden der Lizenz-Check und das Cloud-Messaging
+in der App deaktiviert.
+
+Es ist dann nicht mehr erforderlich, sich in der App mit Benutzername und Passwort anzumelden,
+und die App überträgt keine Daten mehr an den Hersteller.
+
+ACHTUNG: Ohne Online-Funktionen können KEINE Daten mehr an LibreView übertragen werden!
+         Wenn Sie LibreView benutzen, um Berichte zu erstellen, müssen Sie die Online-Funktionen
+         aktiviert lassen! Ausserdem müssen Sie in diesem Fall Ihren Sensor regelmässig scannen,
+         da die LibreLink-App die per Bluetooth empfangenen Blutzuckerwerte nicht speichert!
+
+EOF
+
+patches=0001-Add-forwarding-of-Bluetooth-readings-to-other-apps.patch
+while true ; do
+    read -p "Online-Funktionen deaktivieren? [J/n] " result
+    case ${result} in
+        J | j | Ja | ja | "" )
+            patches+=" 0002-Disable-uplink-features.patch"
+            break;;
+        n | N | nein | Nein )
+            break;;
+        * )
+            echo "${RED}Bitte mit j oder n antworten!${NORMAL}";;
+    esac
+done
+
 cd /tmp/librelink/
-git apply --whitespace=nowarn --verbose ${WORKDIR}/xdrip2.git.patch
-if [ $? = 0 ]; then
-  echo -e "${GREEN}  okay.${NORMAL}"
-  echo
-else
-  echo -e "${RED}  nicht okay.${NORMAL}"
-  echo
-  echo -e "${YELLOW}=> Bitte prüfen Sie o.a. Fehler.${NORMAL}"
-  exit 1
-fi
+for patch in ${patches} ; do
+    "echo${WHITE}Patch : ${patch}${NORMAL}"
+    git apply --whitespace=nowarn --verbose "${WORKDIR}/${patch}"
+    if [ $? = 0 ]; then
+        echo -e "${GREEN}  okay.${NORMAL}"
+        echo
+    else
+        echo -e "${RED}  nicht okay.${NORMAL}"
+        echo
+        echo -e "${YELLOW}=> Bitte prüfen Sie o.a. Fehler.${NORMAL}"
+        exit 1
+    fi
+done
 
 echo -e "${WHITE}Verwende neuen Sourcecode für gepatchte App ...${NORMAL}"
 cp -Rv ${WORKDIR}/sources/* /tmp/librelink/smali_classes2/com/librelink/app/
