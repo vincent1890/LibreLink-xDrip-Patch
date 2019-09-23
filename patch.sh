@@ -104,16 +104,22 @@ echo -e "${WHITE}Patche original App ...${NORMAL}"
 cat <<EOF
 Sollen die Online-Funktionen der Librelink-App deaktiviert werden?
 
-Mit deaktivierter Online-Funktionalität werden der Lizenz-Check und das Cloud-Messaging
-in der App deaktiviert.
+Mit deaktivierter Online-Funktionalität werden der Lizenz-Check und
+das Cloud-Messaging in der App deaktiviert.
 
-Es ist dann nicht mehr erforderlich, sich in der App mit Benutzername und Passwort anzumelden,
-und die App überträgt keine Daten mehr an den Hersteller.
+Es ist dann nicht mehr erforderlich, sich in der App mit Benutzername
+und Passwort anzumelden, und die App überträgt keine Daten mehr an
+den Hersteller.
 
-ACHTUNG: Ohne Online-Funktionen können KEINE Daten mehr an LibreView übertragen werden!
-         Wenn Sie LibreView benutzen, um Berichte zu erstellen, müssen Sie die Online-Funktionen
-         aktiviert lassen! Ausserdem müssen Sie in diesem Fall Ihren Sensor regelmässig scannen,
-         da die LibreLink-App die per Bluetooth empfangenen Blutzuckerwerte nicht speichert!
+ACHTUNG: Ohne Online-Funktionen können KEINE Daten mehr an LibreView
+         übertragen werden!
+
+Wenn Sie LibreView benutzen, um Berichte zu erstellen, müssen Sie die
+Online-Funktionen aktiviert lassen! Ausserdem werden nur Werte über-
+tragen, die in der App selbst vorhanden sind, also solche, die per NFC
+(scannen am Sensor) übertragen wurden. Um in der App ein vollständiges
+Profil zu erhalten, müssen Sie deshalb mindestens alle 8 Stunden einmal
+den Sensor mit dem Handy per NFC scannen.
 
 EOF
 
