@@ -1,4 +1,4 @@
-# Anleitung zum Patchen der App "LibreLink" unter Windows #
+# Anleitung zum Patchen der App "LibreLink" unter Windows mit optionaler Verbindung zu LibreView#
 
 **Grundsätzliches:**
 
@@ -8,9 +8,39 @@ Um die gepatchte App auf einem Android Smartphone installieren zu können, muss 
 
 Die original LibreLink App muss vor der Installation deinstalliert werden. **Dabei geht die Kopplung zum aktuell laufenden Sensor verloren!** Sinnvollerweise wird der Wechsel der App daher beim Wechsel eines Sensors durchgeführt. Sobald die gepatchte App installiert wurde, müssen ihr noch Rechte auf "Standort" (für Bluetooth-Nutzung) und "Speicher" gewährt werden (in neueren Android-Versionen unter "Einstellungen - Apps & Benachrichtigungen - LibreLink - Berechtigungen", ansonsten ggf. den Menüpunkt "Alarme" in der App öffnen und prüfen, ob man dort nach Rechten gefragt wird). Danach kann ein neuer Sensor gekoppelt und die App wie gewohnt genutzt werden.
 
-In den neueren Versionen von xDrip+ (ab ["Nightly Build" vom 15. Juli 2019 oder später](https://github.com/NightscoutFoundation/xDrip/releases) (auf das obere "Assets" klicken und die APK Datei herunterladen)) gibt es in den Einstellungen die Datenquelle "Libre2 (patched App)". Diese ist auszuwählen, um die Werte ohne klassisches Scannen angezeigt zu bekommen. Es kann etwas dauern, bis die ersten Werte in xDrip+ erscheinen.
+In den neueren Versionen von xDrip+ (ab ["Nightly Build" vom 15. Juli 2019 oder
+später](https://github.com/NightscoutFoundation/xDrip/releases) (auf das obere "Assets" klicken und die APK Datei
+herunterladen)) gibt es in den Einstellungen die Datenquelle "Libre2 (patched App)". Diese ist auszuwählen, um die Werte
+ohne klassisches Scannen angezeigt zu bekommen. Es kann etwas dauern, bis die ersten Werte in xDrip+ erscheinen.
 
-**Vorgehen:**
+## Hinweise zu dieser Version und zur Verbindung zu LibreView
+
+Die Originalversion der gepatchten App (https://github.com/user987654321resu/Libre2-patched-App) entfernt jegliche
+Kommunikation der App mit Abbott und damit auch mit LibreView. Ein User in einem Forum hat die Teile des Patches
+entfernt, die die Kommunikation mit Abbott stillegen, siehe
+https://insulinclub.de/index.php?thread/31380-libre-2-entschl%C3%BCsselung/&postID=538465#post538465.
+
+Ein weiterer GitHub-User hat die Originalversion um eine deutsche Anleitung und ein paar Skripte ergänzt, die das
+Erzeugen der gepatchten App automatisieren: https://github.com/TinoKossmann/LibreLink-xDrip-Patch.
+
+Diese Patch-Version baut darauf auf und lässt den Benutzer entscheiden, ob die Verbindung zu Abbott erhalten bleiben
+soll oder gekappt wird. Dafür fragt das Skript `patch.sh` nach, welche Teile des Patches angewandt werden sollen.
+
+Wer die Patches von Hand anwenden will, findet sie im Hauptverzeichnis:
+
+* `0001-Add-forwarding-of-Bluetooth-readings-to-other-apps.patch` ist nur der Teil, der das Forwarding zu xDrip
+  anschaltet. Dieser Patch ist bis auf einige Whitespace-Änderungen identisch zu dem aus dem Forums-Post.
+* `0002-Disable-uplink-features.patch` schaltet zusätzlich die Verbindung zu Abbott ab. Dieser Patch muss **nach*** dem
+  ersten Patch angewandt werden, da es ansonsten Konflikte gibt. Vielleicht kann man diesen Patch auch so anpassen, dass
+  die gepatchte App nur ohne Online-Anbindung funktioniert, ohne die Daten an xdrip weiterzureichen, aber das habe ich
+  nicht ausprobiert.
+
+**WICHTIG**: Wenn die Verbindung zu Abbott aktiv bleibt, enthält die App einen Lizenz-Check und diverse
+Firebase-Messaging-Kanäle zurück zu Abbott. Es ist theoretisch möglich, dass Abbott dadurch herausfinden kann, dass die
+App gepatcht wurde und deshalb die Garantie verweigern (Austausch von defekten Sensoren etc.). Dieses Risikos sollten
+Sie sich bewusst sein, wenn Sie die Verbindung zu Abbott bestehen lassen!
+
+## Vorgehen
 
 Wer Linux nutzt, kann sich an die englische original Anleitung des [ursprünglichen Projekts](https://github.com/user987654321resu/Libre2-patched-App) halten oder die hier enthaltene `patch.sh` nutzen. Für Windows-Nutzer ist folgende Anleitung eventuell hilfreich, welche im Grunde ein Linux SubSystem in Windows installiert und den Patch innerhalb dieses Systems ausführt.
 
@@ -48,7 +78,8 @@ In [diesem Video](https://www.youtube.com/watch?v=ezpGM2jR89A) ist die Anleitung
 
 Die gepatchte App läuft als sog. "Vordergrunddienst". Es ist daher normal, dass oben in der Taskleiste eine "Foreground Service Notification" erscheint.
 
-Die Verbindung zu LibreView bzw. allen Onlinediensten von Abbott wurden entfernt.
+~~Die Verbindung zu LibreView bzw. allen Onlinediensten von Abbott wurden entfernt.~~ Beim Aufruf von `patch.sh` werden
+Sie gefragt, ob die Verbindung zu LibreView und den anderen Onlinediensten von Abbott entfernt werden soll.
 
 Weiterhin gilt die Einschränkung, dass ein per Smartphone gestarteter Sensor nicht mit dem Lesegerät ausgelesen werden kann. Die Nutzung der gepatchten App und ihrer Vorteile bedeutet also zwangsweise, dass das Lesegerät nicht mehr genutzt werden kann.
 
@@ -85,7 +116,7 @@ Weiterhin gilt die Einschränkung, dass ein per Smartphone gestarteter Sensor ni
 1. Load the Version 2.3.0 of the freestyle Libre App DE, for example from [here](https://apkpure.com/de/freestyle-librelink-de/com.freestylelibre.app.de) or [here](https://www.apkmonk.com/download-app/com.freestylelibre.app.de/5_com.freestylelibre.app.de_2019-04-22.apk/)
 (The German version does have english language, don't worry.)
 
-2. [OPTIONAL] If you want to check if your Version is correct, check the MD5 (for windows you might need to get an App like: 
+2. [OPTIONAL] If you want to check if your Version is correct, check the MD5 (for windows you might need to get an App like:
 http://www.winmd5.com to perform md5 checksumming). The Checksum should be: `420735605bacf0e18d2570079ebaa238`
 
 3. Load the [apkTool](https://ibotpeaches.github.io/Apktool/) and install it as described [here](https://ibotpeaches.github.io/Apktool/install/). It seems that the current 2.4 Version of Apktool has some problems on Windows, please download and install an older 2.3 Version if you are using Windows!
@@ -97,7 +128,7 @@ http://www.winmd5.com to perform md5 checksumming). The Checksum should be: `420
 6. You should now have a folder named `librelink` with all the extracted files of the application
 7. Copy the patch Files from this repository to the same location as the `librelink` folder (you should now have a directory with at least the following files/folders: `librelink`, `xdrip2.git.patch`, `sources` and `xdrip2.patch`)
 
-## Patch Application 
+## Patch Application
 **Use either of the two methods:**
 
 ### OPTION 1: patch method
