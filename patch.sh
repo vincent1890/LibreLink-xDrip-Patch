@@ -101,7 +101,7 @@ fi
 
 echo -e "${WHITE}Patche original App ...${NORMAL}"
 
-echo -e <<EOF
+cat <<EOF
 Sollen die Online-Funktionen der Librelink-App deaktiviert werden?
 
 Mit deaktivierter Online-Funktionalität werden der Lizenz-Check und das Cloud-Messaging
