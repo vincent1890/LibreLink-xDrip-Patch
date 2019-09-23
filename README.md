@@ -30,10 +30,12 @@ Wer die Patches von Hand anwenden will, findet sie im Hauptverzeichnis:
 
 * `0001-Add-forwarding-of-Bluetooth-readings-to-other-apps.patch` ist nur der Teil, der das Forwarding zu xDrip
   anschaltet. Dieser Patch ist bis auf einige Whitespace-Änderungen identisch zu dem aus dem Forums-Post.
-* `0002-Disable-uplink-features.patch` schaltet zusätzlich die Verbindung zu Abbott ab. Dieser Patch muss **nach*** dem
+* `0002-Disable-uplink-features.patch` schaltet zusätzlich die Verbindung zu Abbott ab. Dieser Patch muss **nach** dem
   ersten Patch angewandt werden, da es ansonsten Konflikte gibt. Vielleicht kann man diesen Patch auch so anpassen, dass
   die gepatchte App nur ohne Online-Anbindung funktioniert, ohne die Daten an xdrip weiterzureichen, aber das habe ich
   nicht ausprobiert.
+
+Wenn man beide Patches anwendet, ist das Ergebnis exakt identisch zum Original-Patch.
 
 **WICHTIG**: Wenn die Verbindung zu Abbott aktiv bleibt, enthält die App einen Lizenz-Check und diverse
 Firebase-Messaging-Kanäle zurück zu Abbott. Es ist theoretisch möglich, dass Abbott dadurch herausfinden kann, dass die
