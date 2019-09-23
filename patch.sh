@@ -129,8 +129,10 @@ while true ; do
     case ${result} in
         J | j | Ja | ja | "" )
             patches+=" 0002-Disable-uplink-features.patch"
+            appmode=Offline
             break;;
         n | N | nein | Nein )
+            appmode=Online
             break;;
         * )
             echo "${RED}Bitte mit j oder n antworten!${NORMAL}";;
@@ -270,4 +272,11 @@ if [ -d /mnt/c/ ]; then
   fi
 else
   echo -e "${YELLOW}Fertig! Die gepatchte und signierte APK Datei finden Sie unter APK/${FILENAME}_patched.apk${NORMAL}"
+fi
+
+echo -en "${GREEN}Die gepatchte App läuft im ${appmode}-Modus"
+if [[ ${appmode} == Online ]] ; then
+  echo -e " (mit LibreView-Unterstützung)${NORMAL}"
+else
+  echo -e " (ohne LibreView-Unterstützung)${NORMAL}"
 fi
