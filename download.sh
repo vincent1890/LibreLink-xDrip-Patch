@@ -16,6 +16,7 @@ chmod 644 ~/.wget-hsts
 
 echo -e "${WHITE}Lade original APK herunter ...${NORMAL}"
 wget -O APK/apkpure.html --keep-session-cookies --save-cookies cookies.txt -U chrome https://apkpure.com/de/freestyle-librelink-de/com.freestylelibre.app.de/download/4751-APK
+# wget -O APK/apkpure.html --keep-session-cookies --save-cookies cookies.txt -U chromehttps://apkpure.com/fr/freestyle-librelink-fr/com.freestylelibre.app.fr/download/4751-APK
 URL=$(grep "hier klicken" APK/apkpure.html | sed 's#^.*https://##' | sed 's/">.*//')
 wget -O APK/${FILENAME}.apk --load-cookies cookies.txt -U chrome https://${URL}
 if [ $? = 0 ]; then
